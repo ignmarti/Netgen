@@ -66,7 +66,7 @@ def generateMatrix(fout):
 		if child.tag=="layer":
 			for item in child:
 				if item.tag=="demand":
-					item.set("offeredTraffic", str(trunc(ModifyRandomly( MODE,float(item.get("offeredTraffic"))*MULTIPLICITY, VARIABILITY*MULTIPLICITY*float(item.get("offeredTraffic"))))))
+					item.set("offeredTraffic", str(trunc(ModifyRandomly( MODE,float(item.get("offeredTraffic"))*MULTIPLICITY, VARIABILITY*MULTIPLICITY))))
 
 	e.write(fout, xml_declaration=True)
 
