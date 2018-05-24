@@ -202,6 +202,9 @@ else:
 	print("Program Finished! Items stored in: {}_IP.csv and {}_WDM.csv".format(OUTPUT, OUTPUT))
 	exit()
 
+if OUTPUT[-3:]!=".csv":
+	OUTPUT=OUTPUT+".csv"
+	
 with open(OUTPUT, 'w') as csvfile:
 	fieldnames=[]
 	for elems in results:

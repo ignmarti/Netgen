@@ -56,9 +56,29 @@ The configuration file (*CONFIG_FILE*) tells this module the details to be passe
 * **[compulsory]** *1st row*: Net2Plan folder location
 * **[compulsory]** *2nd row*: Net2Plan algorithm class path
 * **[compulsory]** *3rd row*: Net2Plan optimization algorithm name
-* **[optional]** *4th row and on*: Algorithm specific parameters (--alg-param items). The parameters should be in <name>=<value> format
+* **[optional]** *4th row and on*: Algorithm specific parameters (--alg-param items). The parameters should be in name=value format
 
 
 ### Result Compression ###
 
-python parallelParse.py INPUT OUTPUT_FILE -> Reads n2p files and transforms them into a CSV where each entry represents a MT-solution pair
+This module reads the solutions computed by Net2Plan and compresses them into a CSV file format.
+
+```paralllelParse.py INPUT OUTPUT [MODE] [THREADS]```
+
+Where the parameters are:
+
+* *INPUT*: Path to the folder containing Net2Plan solutions (n2p files)
+* *OUTPUT*: Name of the file to be stored
+* *MODE*: The reference of the parsed algorithm. *Supported Modes: IPWDM, FORMU, 11PATH*. *Default mode: IPWDM*
+* *THREADS*: Number of processes to be span, according to computer resources. *Default value: 5*
+
+Modes can be extended by writing a parsing function in the script. The output format at the time is the following:
+
+* **Demmand entries**: [egressNodeId]-[ingressNodeId]_d entries
+* **Carried traffic entries**: [egressNodeId]-[ingressNodeId]_t entries
+* **Backup Carried traffic entries**: [egressNodeId]-[ingressNodeId]_tb entries
+* **Link capacity entries**: [originNodeId]-[destinationNodeId]_l entries
+* **Hop sequence entries**: [egressNodeId]-[ingressNodeId]_h entries
+* **Backup Hop sequence entries**: [egressNodeId]-[ingressNodeId]_hb entries
+* **Hop-Wavelength sequence entries**: [egressNodeId]-[ingressNodeId]_a entries
+* **Wavelenght sequence entries**: [egressNodeId]-[ingressNodeId]_s entries
