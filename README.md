@@ -36,6 +36,19 @@ Where each of the parameters represent:
 * *MODE*: The random distribution to be used. *Supported Modes: GAUSSIAN, UNIFORM*. *Default value: GAUSSIAN*
 * *THREAD_POOL*: Number of processes to be span, according to computer resources. *Default value: 5*
 
+### Data loading ###
+
+This alternate component of Netgen enables loading traffic matrices (in matrix form with indexes) from CSV format into n2p files. The script works as follows:
+
+```python read_matrices.py INPUT_FOL PATH_OUT CANONICAL_FILE CORRESPONDENCE_FILE```
+
+Where each parameter represents:
+
+* *INPUT_FOL*: The path to the folder containing CSV-coded traffic matrices.
+* *PATH_OUT*: The path to the folder where equivalent n2p files will be stored.
+* *CANONICAL_FILE*: The location of a canonical matrix (with active demands and the network topology).
+* *CORRESPONDENCE_FILE*: A json-encoded file that associates Net2Plan node ids to traffic matrices indexes and column names. *Format: {n2pID:TMID,...}*
+
 
 ### Data Labeling ###
 
