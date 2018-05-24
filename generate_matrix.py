@@ -6,38 +6,34 @@ import xml.etree.ElementTree as ET
 
 supported_modes=["GAUSSIAN", "UNIFORM"]
 
-if(len(sys.argv))>=3:
+if(len(sys.argv))>=4:
 	NUM_MATRICES=int(sys.argv[1])
 	PATH=sys.argv[2]+"/"
+	CANONICAL=sys.argv[3]
 else:
-	print ("USAGE: {} NUM_MATRICES PATH_OUT [VARIABILITY] [THREAD_POOL] [CANONICAL_FILE] [MULTIPLICITY_FACTOR] [MODE]\n Supported modes: {}".format(sys.argv[0], supported_modes))
+	print ("USAGE: {} NUM_MATRICES PATH_OUT CANONICAL_FILE [VARIABILITY] [MULTIPLICITY_FACTOR] [MODE] [THREAD_POOL] \n Supported modes: {}".format(sys.argv[0], supported_modes))
 	sys.exit()
 
 
-if(len(sys.argv)>=4):
-	VARIABILITY=float(sys.argv[3])
+if(len(sys.argv)>=5):
+	VARIABILITY=float(sys.argv[4])
 else:
 	VARIABILITY=0.1
 
-if(len(sys.argv)>=5):
-	K=int(sys.argv[4])
-else:
-	K=10
-
 if(len(sys.argv)>=6):
-	CANONICAL=sys.argv[5]
-else:
-	CANONICAL="canonical.n2p"
-
-if(len(sys.argv)>=7):
-	MULTIPLICITY=float(sys.argv[6])
+	MULTIPLICITY=float(sys.argv[5])
 else:
 	MULTIPLICITY=1
 
-if(len(sys.argv)>=8):
-	MODE=sys.argv[7]
+if(len(sys.argv)>=7):
+	MODE=sys.argv[6]
 else:
 	MODE="GAUSSIAN"
+
+if(len(sys.argv)>=8):
+	K=int(sys.argv[7])
+else:
+	K=5
 
 
 def generateRandomNumbers(center):
