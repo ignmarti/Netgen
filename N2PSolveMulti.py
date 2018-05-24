@@ -30,12 +30,15 @@ else:
 
 N2P_PATH="../Net2Plan/"
 ALGO="Offline_ipOverWdm_routingSpectrumAndModulationAssignmentILPNotGrooming"
+ALGO_PATH="../Net2Plan/workspace/builtInExamples.jar"
 PARAMS=[]
 with open(FILE, "r") as f:
 	for i,line in enumerate(f):
 		if(i==0):
 			N2P_PATH=re.sub("[\n\r]", "", line)
 		if(i==1):
+			ALGO_PATH=re.sub("[\n\r]", "", line)
+		if(i==2):
 			ALGO=re.sub("[\n\r]", "", line)
 		if(i>2):
 			PARAMS.append(re.sub("[\n\r]", "", line))
@@ -43,11 +46,12 @@ with open(FILE, "r") as f:
 def callN2P(FILES):
 	global N2P_PATH
 	global ALGO
+	global ALGO_PATH
 	global PARAMS
 	FI=FILES[0]
 	FO=FILES[1]
 	devnull = open(os.devnull, 'w')
-	system_call="java -jar {}/Net2Plan-CLI.jar --mode net-design --input-file {} --output-file {} --class-file {}/workspace/BuiltInExamples.jar --class-name {} --alg-param solverName=cplex ".format(N2P_PATH, FI, FO, N2P_PATH, ALGO)
+	system_call="java -jar {}/Net2Plan-CLI.jar --mode net-design --input-file {} --output-file {} --class-file {} --class-name {} --alg-param solverName=cplex ".format(N2P_PATH, FI, FO, ALGO_PATH, ALGO)
 	params=" ".join(["--alg-param {}".format(x) for x in PARAMS])
 	if DEBUG:
 				subprocess.call(system_call+params, shell=True) 
