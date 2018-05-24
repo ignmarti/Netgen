@@ -66,8 +66,13 @@ def generateMatrix(fout):
 
 	e.write(fout, xml_declaration=True)
 
+
+print("[{}] Starting program".format(time.strftime("%d/%m/%Y - %H:%M:%S")))
+
 all_files=[PATH+str(i)+".n2p" for i in range(NUM_MATRICES)]
 
 pool=multiprocessing.Pool(K)
 
 results=pool.map(generateMatrix, all_files)
+
+print("[{}] Program Finished!".format(time.strftime("%d/%m/%Y - %H:%M:%S")))

@@ -2,6 +2,7 @@ import os
 import re
 import sys
 import csv
+import time
 import multiprocessing
 import xml.etree.ElementTree as ET
 
@@ -163,7 +164,7 @@ def parseN2P11Path(fin):
 
 	return(result)
 
-print("Starting program")
+print("[{}] Starting program".format(time.strftime("%d/%m/%Y - %H:%M:%S")))
 
 all_files=[INPUT+ x for x in os.listdir(INPUT)]
 print("There are {} files to parse".format(len(all_files)))
@@ -204,7 +205,7 @@ else:
 
 if OUTPUT[-3:]!=".csv":
 	OUTPUT=OUTPUT+".csv"
-	
+
 with open(OUTPUT, 'w') as csvfile:
 	fieldnames=[]
 	for elems in results:
@@ -216,4 +217,4 @@ with open(OUTPUT, 'w') as csvfile:
 	for item in results:
 		writer.writerow(item)
 
-print("Program Finished! {} Items stored in: {}".format(len(all_files), OUTPUT))
+print("[{}] Program Finished! {} Items stored in: {}".format(time.strftime("%d/%m/%Y - %H:%M:%S"), len(all_files), OUTPUT))

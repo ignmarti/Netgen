@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import time
 import subprocess
 import multiprocessing
 
@@ -59,11 +60,11 @@ def callN2P(FILES):
 		subprocess.call(system_call+params, shell=True, stdout=devnull, stderr=devnull) 
 
 
-print("Starting program")
+print("[{}] Starting program".format(time.strftime("%d/%m/%Y - %H:%M:%S")))
 
 all_files=[("./"+INPUT+f, "./"+OUTPUT+f) for f in os.listdir(INPUT)]
 pool=multiprocessing.Pool(K)
 
 pool.map(callN2P, all_files)
 
-print("Program Finished!")
+print("[{}] Program Finished!".format(time.strftime("%d/%m/%Y - %H:%M:%S")))
