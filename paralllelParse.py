@@ -71,22 +71,19 @@ def parseN2PIPWDM(fin):
 						result_IP[label+"_t"]=traffic
 		if child.tag=="layer" and child.get("id")=="1":
 			label_ids={}
-			prev=""
+			previous={}
 			count=1
 			for c in child:
 				if(c.tag=="demand"):
 					label="{}-{}".format(c.get("egressNodeId"), c.get("ingressNodeId"))
-					if(prev==label):
-						count+=1
-					else:
-						count=1
-						prev=label
+					prev=previous.get(label, 0)
+					prev+=1
+					previous[label]=prev
 					value=c.get("offeredTraffic")
-					label="{}:{}".format(str(count),label)
+					label="{}:{}".format(str(prev),label)
 					result_WDM[label+"_d"]=value
 					label_ids[c.get("id")]=label
-					
-			for c in child:
+
 				if(c.tag=="link"):
 					label="{}-{}".format(c.get("originNodeId"), c.get("destinationNodeId"))
 					value=c.get("capacity")
