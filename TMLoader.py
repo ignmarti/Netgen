@@ -27,11 +27,13 @@ def generateMatrix(fout, df):
 		if child.tag=="layer":
 			for item in child:
 				if item.tag=="demand":
-					iin=correspondence.get(int(item.get("ingressNodeId")))
-					out=correspondence.get(int(item.get("egressNodeId")))
+					iin=correspondence.get(item.get("ingressNodeId"))
+					out=correspondence.get(item.get("egressNodeId"))
 					print("INPUT NODE: {}; output: {}".format(iin, out))
-					item.set("offeredTraffic", str(df.loc[iin, out]))
+					df.index=[str(ind) for ind in df.index.values]
+					item.set("offeredTraffic", str(df.loc[str(iin), str(out)]))
 	e.write(fout, xml_declaration=True)
+
 
 
 for item in os.listdir(INPUT):
