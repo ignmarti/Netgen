@@ -35,12 +35,12 @@ else:
 
 
 def parseN2PIPWDM(fin):
-	e = ET.parse(fin)
-	root=e.getroot()
 	result_IP={}
 	result_WDM={}
 	label_ids={}
 	try:
+		e = ET.parse(fin)
+		root=e.getroot()
 		for child in root:
 			if child.tag=="layer" and child.get("name")=="IP":
 				label_ids={}
@@ -106,7 +106,7 @@ def parseN2PIPWDM(fin):
 							result_WDM[label+"_a"]=wdms
 	except Exception as e:
 		print(e)
-				
+
 	return([result_IP, result_WDM])
 
 def parseN2PFormulations(fin):
