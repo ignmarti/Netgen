@@ -40,69 +40,72 @@ def parseN2PIPWDM(fin):
 	result_IP={}
 	result_WDM={}
 	label_ids={}
-	for child in root:
-		if child.tag=="layer" and child.get("name")=="IP":
-			label_ids={}
-			for c in child:
-				if(c.tag=="link"):
-					label="{}-{}".format(c.get("originNodeId"), c.get("destinationNodeId"))
-					value=c.get("capacity")
-					result_IP[label+"_l"]=value
-					label_ids[c.get("id")]=label
-				if(c.tag=="demand"):
-					label="{}:{}-{}".format(c.get("id"),c.get("egressNodeId"), c.get("ingressNodeId"))
-					value=c.get("offeredTraffic")
-					result_IP[label+"_d"]=value
-					label_ids[c.get("id")]=label
+	try:
+		for child in root:
+			if child.tag=="layer" and child.get("name")=="IP":
+				label_ids={}
+				for c in child:
+					if(c.tag=="link"):
+						label="{}-{}".format(c.get("originNodeId"), c.get("destinationNodeId"))
+						value=c.get("capacity")
+						result_IP[label+"_l"]=value
+						label_ids[c.get("id")]=label
+					if(c.tag=="demand"):
+						label="{}:{}-{}".format(c.get("id"),c.get("egressNodeId"), c.get("ingressNodeId"))
+						value=c.get("offeredTraffic")
+						result_IP[label+"_d"]=value
+						label_ids[c.get("id")]=label
 
-				if c.tag=="sourceRouting":
-					prev=""
-					count=1
-					for r in c:
-						demandId= r.get("demandId")
-						label=label_ids.get(demandId)
-						if(prev==label):
-							count+=1
-						else:
-							count=1
-							prev=label
-						traffic= r.get("currentCarriedTrafficIfNotFailing")
-						label="{}:{}".format(str(count),label)
-						result_IP[label+"_t"]=traffic
-		if child.tag=="layer" and child.get("id")=="1":
-			label_ids={}
-			previous={}
-			count=1
-			for c in child:
-				if(c.tag=="demand"):
-					label="{}-{}".format(c.get("egressNodeId"), c.get("ingressNodeId"))
-					prev=previous.get(label, 0)
-					prev+=1
-					previous[label]=prev
-					value=c.get("offeredTraffic")
-					label="{}:{}".format(str(prev),label)
-					result_WDM[label+"_d"]=value
-					label_ids[c.get("id")]=label
+					if c.tag=="sourceRouting":
+						prev=""
+						count=1
+						for r in c:
+							demandId= r.get("demandId")
+							label=label_ids.get(demandId)
+							if(prev==label):
+								count+=1
+							else:
+								count=1
+								prev=label
+							traffic= r.get("currentCarriedTrafficIfNotFailing")
+							label="{}:{}".format(str(count),label)
+							result_IP[label+"_t"]=traffic
+			if child.tag=="layer" and child.get("id")=="1":
+				label_ids={}
+				previous={}
+				count=1
+				for c in child:
+					if(c.tag=="demand"):
+						label="{}-{}".format(c.get("egressNodeId"), c.get("ingressNodeId"))
+						prev=previous.get(label, 0)
+						prev+=1
+						previous[label]=prev
+						value=c.get("offeredTraffic")
+						label="{}:{}".format(str(prev),label)
+						result_WDM[label+"_d"]=value
+						label_ids[c.get("id")]=label
 
-				if(c.tag=="link"):
-					label="{}-{}".format(c.get("originNodeId"), c.get("destinationNodeId"))
-					value=c.get("capacity")
-					result_WDM[label+"_l"]=value
-				if c.tag=="sourceRouting":
-					for r in c:
-						demandId= r.get("demandId")
-						label=label_ids.get(demandId)
-						for a in r:
-							if a.get("key")=="seqFrequencySlots_se":
-								fs=re.sub("^\s", "", a.get("value")).split(" ")
-								lambdas=":-:".join(fs)
-								result_WDM[label+"_s"]=lambdas
-						lnks=r.get("currentPath").split(" ")
-						FS=fs[0]
-						hops=":-:".join(lnks)
-						wdms=":-:".join([x+";"+FS for x in lnks])
-						result_WDM[label+"_h"]=hops
-						result_WDM[label+"_a"]=wdms
+					if(c.tag=="link"):
+						label="{}-{}".format(c.get("originNodeId"), c.get("destinationNodeId"))
+						value=c.get("capacity")
+						result_WDM[label+"_l"]=value
+					if c.tag=="sourceRouting":
+						for r in c:
+							demandId= r.get("demandId")
+							label=label_ids.get(demandId)
+							for a in r:
+								if a.get("key")=="seqFrequencySlots_se":
+									fs=re.sub("^\s", "", a.get("value")).split(" ")
+									lambdas=":-:".join(fs)
+									result_WDM[label+"_s"]=lambdas
+							lnks=r.get("currentPath").split(" ")
+							FS=fs[0]
+							hops=":-:".join(lnks)
+							wdms=":-:".join([x+";"+FS for x in lnks])
+							result_WDM[label+"_h"]=hops
+							result_WDM[label+"_a"]=wdms
+	except Exception as e:
+		print(e)
 				
 	return([result_IP, result_WDM])
 
